@@ -37,6 +37,10 @@ int main(void){
 				list->display();
 				break;
 		}
+		if(op == 'x'){
+			cout << "Exiting...";
+			break;
+		}
 	}
 	
 	return 0;
