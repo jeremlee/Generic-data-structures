@@ -15,7 +15,7 @@ public:
 	
 	Node<T>* addRoot(T elem){
 		if(root){
-			throw new logic_error("Root already exists");
+			throw logic_error("Root already exists");
 		}
 		Node<T>* node = new Node<T>(elem);
 		root = node;
@@ -24,7 +24,7 @@ public:
 	
 	Node<T>* addLeft(Node<T>* parent, T elem){
 		if(parent->left){
-			throw new logic_error("Left child of this node already exists");
+			throw logic_error("Left child of this node already exists");
 		}
 		Node<T>* node = new Node<T>(elem,parent);
 		parent->left = node;
@@ -33,7 +33,7 @@ public:
 	
 	Node<T>* addRight(Node<T>* parent, T elem){
 		if(parent->right){
-			throw new logic_error("Right child of this node already exists");
+			throw logic_error("Right child of this node already exists");
 		}
 		Node<T>* node = new Node<T>(elem,parent);
 		parent->right = node;
@@ -45,10 +45,10 @@ public:
 			return;
 		}
 		if(!node->parent){
-			throw new logic_error("Cannot remove root");
+			throw logic_error("Cannot remove root");
 		}
 		if(node->left && node->right){
-			throw new logic_error("Cannot remove if node has two children");
+			throw logic_error("Cannot remove if node has two children");
 		}
 		if(node == node->parent->left){
 			if(node->left){
