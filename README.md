@@ -1,4 +1,2 @@
 wont do stack and queue
-just do
-#include<stack>
-#include<queue> 
+just include c++ built-in stack and queue
