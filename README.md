@@ -1,2 +1,2 @@
-wont do stack and queue
-just include c++ built-in stack and queue
+wont do stack, queue and dynamic array
+just include c++ built-in stack, queue, vector
