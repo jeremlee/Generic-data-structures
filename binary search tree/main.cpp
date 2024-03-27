@@ -5,6 +5,7 @@ using namespace std;
 
 int main(void){
 	BinarySearchTree<int>* bst = new BinarySearchTree<int>();
+	Node<int>* n = nullptr;
 	char op;
 	int num;
 	while(true){
@@ -17,7 +18,11 @@ int main(void){
 				break;
 			case 's':
 				cin >> num;
-				cout << "Found "<< bst->searchNode(num)->elem << endl;
+				n = bst->searchNode(num);
+				if(n){
+					cout << "Found "<< n->elem << endl;
+				}
+				n = nullptr;
 				break;
 			case 'r':
 				cin >> num;
