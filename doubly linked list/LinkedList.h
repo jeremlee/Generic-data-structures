@@ -80,7 +80,7 @@ public:
 		Node<T>* temp = tail;
 		tail = temp->previous;
 		tail->next = nullptr;
-		free(temp);
+		delete temp;
 		size--;
 		return;
 	}
