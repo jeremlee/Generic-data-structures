@@ -11,16 +11,16 @@ int main(void){
 		cin >> op;
 		try{
 			switch(op){
-			case 'a':
-				cin >> num;
-				heap->insert(num);
-				break;
-			case 'r':
-				cout << "Removed: " << heap->remove() << endl;
-				break;
-			case 'd':
-				heap->display();
-				break;
+				case 'a':
+					cin >> num;
+					heap->insert(num);
+					break;
+				case 'r':
+					cout << "Removed: " << heap->remove() << endl;
+					break;
+				case 'd':
+					heap->display();
+					break;
 			}
 			if(op == 'x'){
 				break;
