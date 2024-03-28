@@ -17,8 +17,8 @@ class Heap{
 		int parentIdx = floor((idx-1)/2.0);
 		if(arr[idx] < arr[parentIdx]){
 			swap(arr[idx],arr[parentIdx]);
+			bubbleUp(parentIdx);
 		}
-		bubbleUp(parentIdx);
 	}
 	void bubbleDown(int idx){
 		if(idx >= arr.size()){
