@@ -38,7 +38,7 @@ class HashTable{
 	stack<Node<T,Y>*> getAll(){
 		stack<Node<T,Y>*> elements;
 		for(int i=0;i<capacity;i++){
-			if(!list[i]->getHead()){
+			if(!list[i] || !list[i]->getHead()){
 				continue;
 			}
 			Node<T,Y>* current = list[i]->getHead();
@@ -130,8 +130,7 @@ public:
 	void display(){
 		cout << "Size: " << size << " Capacity: " << capacity << endl;
 		for(int i=0;i<capacity;i++){
-			if(!list[i]){
-				cout << "Nothing inside" << endl;
+			if(!list[i] || !list[i]->getHead()){
 				continue;
 			}
 			Node<T,Y>* current = list[i]->getHead();
