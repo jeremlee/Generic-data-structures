@@ -96,11 +96,11 @@ public:
 	}
 	
 	void add(T key, Y value){
-		if(size == capacity){
-			grow();
-		}
 		int idx = hash(key,capacity);
 		if(!checkDuplicate(key,value,idx)){
+			if(size == capacity){
+				grow();
+			}
 			list[idx]->add(key,value);
 			size++;
 		}

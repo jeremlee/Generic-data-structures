@@ -122,7 +122,7 @@ public:
 	
 	void removeNode(T key){
 		if(!head){
-			return;
+			throw logic_error("Key not found!");
 		}
 		bool delay = false;
 		bool found = false;
