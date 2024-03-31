@@ -100,6 +100,7 @@ class HashTable{
 		return false;
 	}
 	void removeHelper(int idx){
+		delete list[idx];
 		list[idx] = nullptr;
 		size--;
 		if(size <= capacity*0.75){
