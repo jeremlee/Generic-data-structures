@@ -70,10 +70,7 @@ class HashTable{
 				list[idx] = new Node<T,Y>(temp->key,temp->value);
 			}else{
 				while(list[idx]){
-					idx++;
-					if(idx >= capacity){
-						idx = 0;
-					}
+					idx = (idx+1)%capacity;
 				}
 				list[idx] = new Node<T,Y>(temp->key,temp->value);
 			}
@@ -82,20 +79,13 @@ class HashTable{
 	}	
 	
 	bool checkDuplicate(T key, Y value, int idx){
-		int oldIdx = idx-1;
-		if(list[oldIdx] && list[oldIdx]->key == key){
-			list[oldIdx]->value = value;
-			return true;
-		}
 		if(list[idx]&&list[idx]->key == key){
 			list[idx]->value = value;
 			return true;
 		}
+		int oldIdx = idx;
 		while(true){
-			idx++;
-			if(idx >= capacity){
-				idx = 0;
-			}
+			idx = (idx+1)%capacity;
 			if(idx == oldIdx){
 				break;
 			}
@@ -134,33 +124,23 @@ public:
 			grow();
 		}
 		int idx = hash(key,capacity);
-		if(!list[idx]){
-			list[idx] = new Node<T,Y>(key,value);
-		}else{
-			while(list[idx]){
-				idx++;
-				if(idx >= capacity){
-					idx = 0;
-				}
-			}
-			list[idx] = new Node<T,Y>(key,value);
+		while(list[idx]){
+			idx=(idx+1)%capacity;
 		}
+		list[idx] = new Node<T,Y>(key,value);
 		size++;
 	}
 	
 	Y getElement(T key){
 		int idx = hash(key,capacity);
-		int oldIdx = idx-1;
+		int oldIdx = idx;
 		while(true){
 			if(list[idx]){
 				if(list[idx]->key == key){
 					return list[idx]->value;
 				}
 			}
-			idx++;
-			if(idx >= capacity){
-				idx = 0;
-			}
+			idx=(idx+1)%capacity;
 			if(idx == oldIdx){
 				break;
 			}
@@ -171,16 +151,13 @@ public:
 	void remove(T key){
 		bool removed = false;
 		int idx = hash(key,capacity);
-		int oldIdx = idx-1;
+		int oldIdx = idx;
 		if(list[idx] && list[idx]->key == key){
 			removeHelper(idx);
 			return;
 		}
 		while(true){
-			idx++;
-			if(idx >= capacity){
-				idx = 0;
-			}
+			idx=(idx+1)%capacity;
 			if(idx == oldIdx){
 				break;
 			}
