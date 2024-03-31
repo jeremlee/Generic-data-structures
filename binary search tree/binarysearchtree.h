@@ -5,11 +5,7 @@ using namespace std;
 template<typename T>
 
 class BinarySearchTree{
-public:
 	Node<T>* root;
-	BinarySearchTree(){
-		root = nullptr;
-	}
 	Node<T>* insertHelper(Node<T>* node, T elem, Node<T>* parent){
 		if(!node){
 			return new Node<T>(elem, parent);
@@ -20,9 +16,6 @@ public:
 			node->right = insertHelper(node->right,elem,node);
 		}
 		return node;
-	}
-	void insertNode(T elem){
-		root = insertHelper(root,elem,nullptr);
 	}
 	Node<T>* searchHelper(Node<T>* node, T elem){
 		if(!node){
@@ -38,10 +31,6 @@ public:
 			return nullptr;
 		}
 	}
-	Node<T>* searchNode(T elem){
-		return searchHelper(root,elem);
-	}
-	
 	void removeHelper(Node<T>* node){
 		if(!node){
 			cout << "Node null" << endl;
@@ -102,14 +91,6 @@ public:
 		}
 		delete node;
 	}
-	
-	void removeNode(T elem){
-		Node<T>* toDelete = searchNode(elem);
-		if(toDelete){
-			removeHelper(toDelete);
-		}
-	}
-	
 	Node<T>* leftest(Node<T>* node){
 		if(!node){
 			return nullptr;
@@ -120,13 +101,11 @@ public:
 		}
 		return p;
 	}
-	
 	void swap(Node<T>* a, Node<T>* b){
 		T temp = a->elem;
 		a->elem = b->elem;
 		b->elem = temp;
 	}
-	
 	void preorder(Node<T>* node){
 	    if(!node){
 	        return;
@@ -135,11 +114,6 @@ public:
 	    preorder(node->left);
 	    preorder(node->right);
 	}
-	
-	void preorder(){
-		preorder(root);
-	}
-	
 	void inorder(Node<T>* node){
 	    if(!node){
 	        return;
@@ -148,11 +122,6 @@ public:
 	    cout << node->elem << " ";
 	    inorder(node->right);
 	}
-	
-	void inorder(){
-		inorder(root);
-	}
-	
 	void postorder(Node<T>* node){
 	    if(!node){
 	        return;
@@ -161,10 +130,29 @@ public:
 	    postorder(node->right);
 	    cout << node->elem << " ";
 	}
-	
+public:
+	BinarySearchTree(){
+		root = nullptr;
+	}
+	void insertNode(T elem){
+		root = insertHelper(root,elem,nullptr);
+	}
+	Node<T>* searchNode(T elem){
+		return searchHelper(root,elem);
+	}
+	void removeNode(T elem){
+		Node<T>* toDelete = searchNode(elem);
+		if(toDelete){
+			removeHelper(toDelete);
+		}
+	}
+	void preorder(){
+		preorder(root);
+	}
+	void inorder(){
+		inorder(root);
+	}
 	void postorder(){
 		postorder(root);
 	}
-
-	
 };
