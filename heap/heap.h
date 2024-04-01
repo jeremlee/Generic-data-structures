@@ -64,4 +64,16 @@ public:
 		}
 		cout << endl;
 	}
+	static void heapSort(vector<T>& arr){
+		Heap<T>* heap = new Heap<T>();
+		for(int i=0;i<arr.size();i++){
+			heap->insert(arr[i]);
+		}
+		int size = arr.size();
+		arr.clear();
+		for(int i=0;i<size;i++){
+			arr.push_back(heap->remove());
+		}
+		delete heap;
+	}
 };
