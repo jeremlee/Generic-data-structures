@@ -11,7 +11,7 @@ template<typename T,typename Y>
 class HashTable{
 	LinkedList<T,Y>** list;
 	int capacity, size;
-	function<int(const T&,int)> hash;
+	function<int(const T&)> hasher;
 	void initialize(){
 		for(int i=0;i<capacity;i++){
 			list[i] = new LinkedList<T,Y>();
@@ -34,6 +34,13 @@ class HashTable{
 			}
 		}
 		return true;
+	}
+	int compress(int hashValue){
+		return hashValue%capacity;
+	}
+	int hash(T key){
+		int idx = hasher(key);
+		return compress(idx);
 	}
 	stack<Node<T,Y>*> getAll(){
 		stack<Node<T,Y>*> elements;
@@ -69,7 +76,7 @@ class HashTable{
 		Node<T,Y>* temp;
 		while(!elements.empty()){
 			temp = elements.top();
-			int idx = hash(temp->key,capacity);
+			int idx = hash(temp->key);
 			list[idx]->add(temp->key,temp->value);
 			elements.pop();
 		}
@@ -87,8 +94,8 @@ class HashTable{
 		return false;
 	}
 public:
-	HashTable(function<int(const T&,int)> customHash){
-		hash = customHash;
+	HashTable(function<int(const T&)> customHash){
+		hasher = customHash;
 		capacity = 5;
 		size = 0;
 		list = new LinkedList<T,Y>*[capacity];
@@ -96,7 +103,7 @@ public:
 	}
 	
 	void add(T key, Y value){
-		int idx = hash(key,capacity);
+		int idx = hash(key);
 		if(!checkDuplicate(key,value,idx)){
 			if(size == capacity){
 				grow();
@@ -107,7 +114,7 @@ public:
 	}
 	
 	Y getElement(T key){
-		int idx = hash(key,capacity);
+		int idx = hash(key);
 		Node<T,Y>* current = list[idx]->getHead();
 		while(current){
 			if(current->key == key){
@@ -119,7 +126,7 @@ public:
 	}
 	
 	void remove(T key){
-		int idx = hash(key,capacity);
+		int idx = hash(key);
 		list[idx]->removeNode(key);
 		size--;
 		if(size <= capacity*0.75){
