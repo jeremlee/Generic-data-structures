@@ -11,7 +11,7 @@ template<typename T,typename Y>
 class HashTable{
 	Node<T,Y>** list;
 	int capacity, size;
-	function<int(const T&,int)> hash;
+	function<int(const T&)> hasher;
 	void initialize(){
 		for(int i=0;i<capacity;i++){
 			list[i] = nullptr;
@@ -34,6 +34,13 @@ class HashTable{
 			}
 		}
 		return true;
+	}
+	int compress(int hashValue){
+		return hashValue%capacity;
+	}
+	int hash(T key){
+		int idx = hasher(key);
+		return compress(idx);
 	}
 	stack<Node<T,Y>*> getAll(){
 		stack<Node<T,Y>*> elements;
@@ -65,15 +72,14 @@ class HashTable{
 		Node<T,Y>* temp;
 		while(!elements.empty()){
 			temp = elements.top();
-			int idx = hash(temp->key,capacity);
-			if(!list[idx]){
-				list[idx] = new Node<T,Y>(temp->key,temp->value);
-			}else{
-				while(list[idx]){
-					idx = (idx+1)%capacity;
-				}
-				list[idx] = new Node<T,Y>(temp->key,temp->value);
+			int idx = hash(temp->key);
+			int hashValue = idx;
+			int i=1;
+			while(list[idx]){
+				idx = (hashValue+i)%capacity;
+				i++;
 			}
+			list[idx] = new Node<T,Y>(temp->key,temp->value);
 			elements.pop();
 		}
 	}	
@@ -83,10 +89,12 @@ class HashTable{
 			list[idx]->value = value;
 			return true;
 		}
-		int oldIdx = idx;
+		int hashValue = idx;
+		int i=1;
 		while(true){
-			idx = (idx+1)%capacity;
-			if(idx == oldIdx){
+			idx = (hashValue+i)%capacity;
+			i++;
+			if(idx == hashValue){
 				break;
 			}
 			if(!list[idx]){
@@ -108,8 +116,8 @@ class HashTable{
 		}
 	}
 public:
-	HashTable(function<int(const T&,int)> customHash){
-		hash = customHash;
+	HashTable(function<int(const T&)> customHash){
+		hasher = customHash;
 		capacity = 5;
 		size = 0;
 		list = new Node<T,Y>*[capacity];
@@ -117,32 +125,37 @@ public:
 	}
 	
 	void add(T key, Y value){
-		int oldIdx = hash(key,capacity);
+		int oldIdx = hash(key);
 		if(checkDuplicate(key,value,oldIdx)){
 			return;
 		}
 		if(size == capacity){
 			grow();
 		}
-		int idx = hash(key,capacity);
+		int idx = hash(key);
+		int hashValue = idx;
+		int i=1;
 		while(list[idx]){
-			idx=(idx+1)%capacity;
+			idx=(hashValue+i)%capacity;
+			i++;
 		}
 		list[idx] = new Node<T,Y>(key,value);
 		size++;
 	}
 	
 	Y getElement(T key){
-		int idx = hash(key,capacity);
-		int oldIdx = idx;
+		int idx = hash(key);
+		int hashValue = idx;
+		int i=1;
 		while(true){
 			if(list[idx]){
 				if(list[idx]->key == key){
 					return list[idx]->value;
 				}
 			}
-			idx=(idx+1)%capacity;
-			if(idx == oldIdx){
+			idx=(hashValue+i)%capacity;
+			i++;
+			if(idx == hashValue){
 				break;
 			}
 		}
@@ -151,15 +164,17 @@ public:
 	
 	void remove(T key){
 		bool removed = false;
-		int idx = hash(key,capacity);
-		int oldIdx = idx;
+		int idx = hash(key);
 		if(list[idx] && list[idx]->key == key){
 			removeHelper(idx);
 			return;
 		}
+		int i=1;
+		int hashValue = idx;
 		while(true){
-			idx=(idx+1)%capacity;
-			if(idx == oldIdx){
+			idx=(hashValue+i)%capacity;
+			i++;
+			if(idx == hashValue){
 				break;
 			}
 			if(!list[idx]){

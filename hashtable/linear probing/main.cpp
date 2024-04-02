@@ -1,34 +1,36 @@
 #include<iostream>
 #include<string>
+#include<cmath>
 #include"hashtable.h"
 using namespace std;
 
-int stringHasher(string key, int capacity){
+int stringHasher(string key){
 	int hash = 0;
 	for(char c : key){
 		hash+=c;
 	}
-	return hash%capacity;
+	return hash;
 }
 
-int string_djb2Hash(string key, int capacity) {
-    unsigned long hash = 5381;
-    for (char c : key) {
-        hash=((hash << 5)+hash)+c; 
+int polynomialHash(string key){
+    int i = key.length()-1, hash = 0;
+    for(char c : key){
+        hash+=(int)c * pow(2,i);
+        i--;
     }
-    return (int)(hash%capacity);
+    return hash;
 }
 
-int intHasher(int key, int capacity){
-	return key%capacity;
+int intHasher(int key){
+	return key;
 }
 
-int doubleHasher(double key, int capacity){
-	return (int)key%capacity;
+int doubleHasher(double key){
+	return (int)key;
 }
 
 int main(void){
-	HashTable<string,string>* ht = new HashTable<string,string>(string_djb2Hash);
+	HashTable<string,string>* ht = new HashTable<string,string>(polynomialHash);
 	string input1;
 	string input2;
 	char op;
